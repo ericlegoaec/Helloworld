@@ -1,0 +1,19 @@
+{
+  "type": "Complex Event Queries",
+  "pattern": "SELECT e.descriptor.execution.price AS HtSoldprice, e.descriptor.execution.buySell\nFROM Executions.win:length(1) AS e\nWHERE e.descriptor.execution.buySell = -1\n\n/*\ncom.ingalys.imc.BuySell {\n    int BUY = 1;\n    int SELL = -1;\n    int INVALID = 0;\n    int BOTH = 2;\n}\n*/",
+  "reactors": [
+    {
+      "type": "Alerts"
+    },
+    {
+      "type": "Send Controller message",
+      "message": "SetCapBid",
+      "factory": "BidFreezer/FreezeBidController.scala",
+      "parameters": {
+        "atMost": {
+          "event": "HtSoldprice"
+        }
+      }
+    }
+  ]
+}

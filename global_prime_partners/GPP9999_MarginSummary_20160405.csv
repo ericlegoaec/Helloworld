@@ -1,0 +1,4 @@
+﻿TradeDate,AccountNumber,AccountName,GroupAccountName,Currency,LongMarketValue,ShortMarketValue,LongCashBalance,ShortCashBalace,EquityBondMarginReq,SwapPnL,SwapMarginReq,FOTotalEquity,FOMargin,TotalNetEquity,TotalMarginReq,ExcessDeficit,BaseCCY,FXRate,TotalEquityBaseCcy,TotalMarginBaseCcy,ExcessDeficitBaseCcy
+2016/04/05,9999,Test Account,Test Account,GBP,0.00,0.00,12546.00,0.00,0.00,0.00,0.00,0.00,0.00,12546.00,0.00,12546.00,GBP,1.00000,12546.00,0.00,12546.00
+2016/04/05,9999,Test Account,Test Account,USD,1240583.00,-427050.00,-756048.00,430590.00,-416908.00,0.00,0.00,0.00,0.00,488076.00,-416908.00,71167.00,GBP,0.70710,345118.00,-294796.00,50322.00
+

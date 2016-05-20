@@ -1,0 +1,27 @@
+Account,AccountName,AccountType,CCY,EntryDate,ValueDate,TransactionRef,TransactionType,TransactionSubType,Description,vchISIN,Movement,RunningTotal
+9999,Test Account,Cash,EUR,2016/04/06,,,,,Opening Balance,,0,-2085879.83
+9999,Test Account,Cash,EUR,2016/04/06,2016/04/06,06693348T01,Cash Collateral,,Short Collateral Adjustment,,0.67,-2085879.16
+9999,Test Account,Cash,EUR,2016/04/06,2016/04/08,06697786T01,FX Sell,,EUR FX Sell (USD),,-17000,-2102879.16
+9999,Test Account,Cash,EUR,2016/04/06,2016/04/08,06697831T01,FX To,,EUR FX Transaction,,52616.56,-2050262.6
+9999,Test Account,Cash,EUR,2016/04/06,2016/04/08,06698889T01,FX Buy,,EUR FX Buy (USD),,19227.35,-2031035.25
+9999,Test Account,Cash,EUR,2016/04/06,2016/04/05,06699178T02,Cash Withdrawal,Greek Tax,Cash Withdrawal - Greek Tax (85.92) EUR,,-85.92,-2031121.17
+9999,Test Account,Cash,EUR,2016/04/06,2016/04/05,06699200T02,Cash Withdrawal,Greek Tax,Cash Withdrawal - Greek Tax (29.88) EUR,,-29.88,-2031151.05
+9999,Test Account,Cash,EUR,2016/04/06,2016/04/08,06700369T01,Equity/Bond,,Sell CONTINENTAL AG 48 @ 183.9500 EUR,DE0005439004,8825.19,-2022325.86
+9999,Test Account,Cash,EUR,2016/04/06,2016/04/08,06700371T01,Equity/Bond,,Sell BAYER AG-REG 180 @ 100.5000 EUR,DE000BAY0017,18080.95,-2004244.91
+9999,Test Account,Cash,EUR,2016/04/06,,,,,Closing Balance,,0,-2004244.91
+9999,Test Account,Collateral,EUR,2016/04/06,,,,,Opening Balance,,0,40.08
+9999,Test Account,Collateral,EUR,2016/04/06,2016/04/06,06693348T01,Cash Collateral,,Short Collateral Adjustment,,-0.67,39.41
+9999,Test Account,Collateral,EUR,2016/04/06,,,,,Closing Balance,,0,39.41
+9999,Test Account,Cash,USD,2016/04/06,,,,,Opening Balance,,0,-23316513.51
+9999,Test Account,Cash,USD,2016/04/06,2016/03/31,06673809T02,Cash Dividend,,Cancellation of  Cash Dividend 22.84 USD,,-22.84,-23316536.35
+9999,Test Account,Cash,USD,2016/04/06,2016/04/01,06673838T03,Cash Dividend,,Cancellation of  Cash Dividend 375.38 USD,,-375.38,-23316911.73
+9999,Test Account,Cash,USD,2016/04/06,2016/03/31,06699115T02,Cash Dividend,Dividend,Cash Dividend (186.06) USD,US2017122050,-186.06,-23317097.79
+9999,Test Account,Cash,USD,2016/04/06,2016/03/31,06699118T02,Cash Dividend,Dividend,"Cash Dividend 1,550.66 USD",US2017122050,1550.66,-23315547.13
+9999,Test Account,Cash,USD,2016/04/06,2016/03/31,06699133T02,Cash Dividend,Dividend,Cash Dividend 22.84 USD,CA3518581051,22.84,-23315524.29
+9999,Test Account,Cash,USD,2016/04/06,2016/04/05,06699156T02,Cash Dividend,Dividend,Cash Dividend (5.00) USD,US06738E2046,-5,-23315529.29
+9999,Test Account,Cash,USD,2016/04/06,2016/04/05,06699159T02,Cash Dividend,Dividend,Cash Dividend 202.05 USD,US06738E2046,202.05,-23315327.24
+9999,Test Account,Cash,USD,2016/04/06,2016/04/05,06700287T02,Cash Withdrawal,Reset-Interest,Cash Withdrawal - Reset-Interest (516.99) USD,,-516.99,-23315844.23
+9999,Test Account,Cash,USD,2016/04/06,2016/04/05,06700357T02,Cash Deposit,Reset-Equity,"Cash Deposit - Reset-Equity 51,387.99 USD",,51387.99,-23264456.24
+9999,Test Account,Cash,USD,2016/04/06,2016/04/11,06702997T01,Equity/Bond,,Sell QUALCOMM INC 10 @ 49.7600 USD,US7475251036,497.5,-23263958.74
+9999,Test Account,Cash,USD,2016/04/06,2016/04/11,06702999T01,Equity/Bond,,Sell ORACLE CORP 100 @ 40.4100 USD,US68389X1054,4040.16,-23259918.58
+9999,Test Account,Cash,USD,2016/04/06,,,,,Closing Balance,,0,-23259918.58
