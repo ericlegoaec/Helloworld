@@ -2,14 +2,12 @@
 
 import sys
 
-m43 = {length:0.016,pixel:4096}
-
-a7rii = 0.036
+length = 0.036
 pixel = 7360
 
-f = 0.043
+f = 0.090
 s = 3
-N = 1.2
+N = 2.8
 
 c = length/pixel
 
