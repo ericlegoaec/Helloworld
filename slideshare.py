@@ -2,7 +2,7 @@ import re
 import urllib
 from pyquery import PyQuery as pq
 
-website = "http://www.slideshare.net/BroadridgeFinancialSolutions/broadridge-celent-primebrokerrelationshipwhitepaper"
+website = "http://www.slideshare.net/khanyasmin/hedge-fund-manager-questionnaire"
 
 result = urllib.urlopen(website).read()
 d = pq(result)
