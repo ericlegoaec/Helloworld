@@ -1,0 +1,28 @@
+<html>
+	<head>
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+		<script>
+			$(function() {
+				$("#css_src").on('keypress', function(e) {
+					if(e.which === 13) {
+						alert($("#css_src").val());
+					}
+				})
+				// $('head').append('<link rel="stylesheet" type="text/css" href="style.css">');
+
+			});
+		</script>
+	</head>
+	<body class="container">
+		<h1>Google Font Emulator</h1>
+		<p>Font CSS source</p>
+		<p><input type="text" id="css_src" class="form-control"></p>
+		<p>Text Input</p>
+		<p><textarea class="form-control" rows="10" id="text_input" ></textarea></p>
+		<p>Text Output</p>
+		<p><textarea class="form-control" rows="10" id="text_output" ></textarea></p>
+	</body>
+
+</html>
