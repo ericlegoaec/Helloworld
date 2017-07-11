@@ -1,4 +1,6 @@
 import cv2
+import numpy as np
+from matplotlib import pyplot as plt
 from PIL import Image
 
 # image = cv2.imread("sample2.png")
@@ -7,22 +9,17 @@ from PIL import Image
 # cv2.imwrite("sample2_unsharp.png", unsharp_image)
 
 
-def remove_noise(im):
-	im_width, im_height = im.size
-	denoised_im = Image.new("L", (im_width, im_height))
+img = cv2.imread('sample2.png',0)
+ret,th1 = cv2.threshold(img,127,255,cv2.THRESH_BINARY)
+th2 = cv2.adaptiveThreshold(img,255,cv2.ADAPTIVE_THRESH_MEAN_C,cv2.THRESH_BINARY,11,2)
+th3 = cv2.adaptiveThreshold(img,255,cv2.ADAPTIVE_THRESH_GAUSSIAN_C,cv2.THRESH_BINARY,11,2)
+# titles = ['Original Image', 'Global Thresholding (v = 127)',
+#             'Adaptive Mean Thresholding', 'Adaptive Gaussian Thresholding']
+# images = [img, th1, th2, th3]
+# for i in range(4):
+#     plt.subplot(2,2,i+1),plt.imshow(images[i],'gray')
+#     plt.title(titles[i])
+#     plt.xticks([]),plt.yticks([])
+# plt.show()
 
-	for i in range(0, im_width):
-		for j in range(0, im_height):
-			x = im.getpixel((i, j))
-			if (x < 162):
-				denoised_im.paste(0, (im_width-i, im_height-j))
-			else:
-				denoised_im.paste(255, (im_width-i, im_height-j))
-
-	return denoised_im
-
-
-im = Image.open("sample2.png")
-bw_im  = im.convert('L')
-denoised_im = remove_noise(bw_im)
-denoised_im.save("sample2_after.png")
+cv2.imwrite("sample2_after.png", th3)
