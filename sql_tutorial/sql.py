@@ -1,22 +1,34 @@
 import os
 import re
 import sqlite3
-import xlrd
+import win32com.client
 
 # Import xlsx file to an array, first line is header
 # You may ignore ths function at this moment as it may be too complicated
-def xlsx_to_arr(xlsx_file, worksheet=0, row_start=0, col_start=0, row_end=-1, col_end=-1):
+def xlsx_to_arr(xlsx_file, worksheet=1, xyrange=""):
 	arr = []
-	wb = xlrd.open_workbook(xlsx_file)
-	ws =  wb.sheet_by_index(worksheet)
+	xl = win32com.client.Dispatch('Excel.Application')
+	xl.ScreenUpdating = False
 
-	row_end = ws.nrows if row_end == -1 else row_end
-	col_end = ws.ncols if col_end == -1 else col_end
+	wb = xl.Workbooks.Open(xlsx_file)
+	ws = wb.Worksheets(worksheet)
+	rng = ws.UsedRange if xyrange == "" else ws.Range(xyrange)
 
-	arr = [ws.row_values(row, start_colx=col_start, end_colx=col_end) for row in range(row_start, row_end)]
-	header = ','.join(x if x not in arr[0][:n] else x+str(n) for n, x in enumerate(arr[0]) )
+	for i in range(rng.Row, rng.Row+rng.Rows.Count):
+		row_arr = []
+		for j in range(rng.Column, rng.Column+rng.Columns.Count):
+			row_arr.append("" if ws.Cells(i, j).Value == None else str(ws.Cells(i, j).Value) ) 
 
-	return re.sub(r"[\*\.#/\$%\"\(\)& \_]", "", header), arr[1:]
+		if "".join(row_arr) != "":
+			arr.append(row_arr)
+
+	wb.Close(False)
+
+	xl.Application.Quit()
+	
+	header = arr[0]
+	header = ','.join(header)
+	return re.sub(r"[\*\.#/\$%\"\(\)& \_-]", "", header), arr[1:]
 
 # For SQL insert statement, insert into tbl VALUES (?,?,?) arr
 def question_marks(st):
@@ -88,7 +100,7 @@ def main():
 	print ("Select stock where underlying is HSI")
 	cur.execute("select * from cbbc where underlying = 'HSI' ")
 	for row in cur.fetchall():
-		print (row)
+		print (','.join([str(ele) for ele in row]))
 	return
 
 main()
