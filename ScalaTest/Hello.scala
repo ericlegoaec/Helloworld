@@ -58,7 +58,7 @@ trait Test {
 	}
 
 	implicit class AutoTimes(val x: Int) {
-		def times[A](f:  =>  A): Unit = {
+		def times[A](f: =>  A): Unit = {
 			for (i <- 1 to x)
 				f
 		}
