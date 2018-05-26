@@ -11,8 +11,8 @@ X = dataset[:,0:8]
 Y = dataset[:,8]
 # create model
 model = Sequential()
-model.add(Dense(12, input_dim=8, activation='tanh'))
-model.add(Dense(8, activation='relu'))
+model.add(Dense(9, input_dim=8, activation='tanh'))
+model.add(Dense(4, activation='relu'))
 model.add(Dense(1, activation='sigmoid'))
 # Compile model
 model.compile(loss='binary_crossentropy', optimizer='adam', metrics=['accuracy'])
