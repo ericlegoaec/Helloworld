@@ -9,7 +9,7 @@ import os
 
 hdr = {'User-Agent': 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.11 (KHTML, like Gecko) Chrome/23.0.1271.64 Safari/537.11',}
 
-symbol = "00700"
+symbol = "14383"
 url = "http://xueqiu.com/S/" + symbol 
 response = requests.get(url, headers=hdr)
 
@@ -18,7 +18,8 @@ response = requests.get(url, headers=hdr)
 
 url = "https://xueqiu.com/v4/stock/quote.json?code=" + symbol 
 response = requests.get(url, headers=hdr, cookies=response.cookies)
-print (response.text)
+with open(os.path.join(os.path.dirname(os.path.abspath(__file__)), "xueqiu.txt"), 'w', encoding="utf-8") as f:
+    f.write (response.text)
 # d = pq(result)
 
 # ps = d(".slide_image")
