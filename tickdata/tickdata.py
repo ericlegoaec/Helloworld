@@ -6,14 +6,15 @@ import sqlite3
 import requests
 import datetime
 import glob
+import matplotlib.pyplot as plt
 import pandas as pd
 import numpy as np
 
 CONST_DIC = {
 	"sqlite_file": "/Users/frederickli/Projects/tmp/tickdata.db",
-	"dw_list_file": "/Users/frederickli/Projects/tmp/CFBC_20180622/dwFullList_20180622.csv",
-	"td30_file": "/Users/frederickli/Projects/tmp/CFBC_20180622/MC30_AllFB_20180622.csv",
-	"tmp_file": "/Users/frederickli/Projects/tmp/CFBC_20180622/tmp.csv",
+	"dw_list_file": os.path.join(os.path.dirname(__file__), "dwFullList_20180622.csv"),
+	"td30_file": "/Users/frederickli/Projects/tmp/CFBC_20180622/MC31_AllFB_20180622.csv",
+	"tmp_file": os.path.join(os.path.dirname(__file__), "tmp.csv"),
 }
 
 HEADER = "ordertime,msgtype,security,tradeid,orderid,price,quantity,trdtype,ticktime,side,ordertype,orderboookposition,aggshare" #+ (','.join(["arb_" + str(x) for x in range(13,18)]))
@@ -83,25 +84,36 @@ def csv_to_arr(csv_file, has_header=True, delim=',', rows=None, cols=None ):
 
 	return
 
+def import_df(fulllist, tickdata):
 
-@timer
-def make_tmp():
-	fulllist_df = pd.read_csv(max(glob.iglob(CONST_DIC["dw_list_file"])), encoding='utf-16', index_col=False, skip_blank_lines=True, error_bad_lines=False, sep='\t', skiprows=1)
+	fulllist_df = pd.read_csv(fulllist, encoding='utf-16', index_col=False, skip_blank_lines=True, error_bad_lines=False, sep='\t', skiprows=1)
 	fulllist_df = fulllist_df.iloc[0:-3]
 	fulllist_df.columns = [re.sub(r"[\^\*\.#/\$%\"\(\)& :]", "", c) for c in fulllist_df.columns]
 	fulllist_df = fulllist_df.rename(columns={"DWCode":"security"})
+	fulllist_df["UL"] = fulllist_df["UL"].apply(lambda x: x.lstrip('0'))
+	fulllist_df["security"] = fulllist_df["security"].apply(lambda x: x.lstrip('0'))
 
-	arr = csv_to_arr(CONST_DIC["td30_file"], has_header=False, cols=list(range(0,13)) )
+	arr = csv_to_arr(tickdata, has_header=False, cols=list(range(0,13)) )
 	df = pd.DataFrame(data=arr, columns=HEADER.split(','))
+	return fulllist_df, df
 
-	df = pd.merge(df, fulllist_df, on=["security"], how="left")
-	print (df.iloc[1])
-	lite_df = df.loc[(df.UL == "00700") | (df.security == "700")][HEADER.split(',')]
-	lite_df = lite_df.iloc[1:100000]
+def make_tmp():
+	fulllist_df, tickdata_df = import_df(CONST_DIC["dw_list_file"], CONST_DIC["td30_file"])
+
+	df = pd.merge(tickdata_df, fulllist_df, on=["security"], how="left")
+	lite_df = df.loc[(df.UL == "175") | (df.security == "175") | (df.UL == "388") | (df.security == "388")][HEADER.split(',')]
+	lite_df = lite_df.iloc[1:300000]
 	lite_df.to_csv(CONST_DIC["tmp_file"], index=False, header=False)
 
 	return
+
+@timer
 def main():
+	fulllist_df, tickdata_df = import_df(CONST_DIC["dw_list_file"], CONST_DIC["tmp_file"])
+	tickdata_df = pd.merge(tickdata_df, fulllist_df, on=["security"], how="left")
+	tickdata_df["timestamp"] = tickdata_df["ordertime"].apply(lambda x: x[0:4] + '-' + x[4:6] + '-' + x[6:8] + 'T' + x[8:10] + ':' + x[10:12] + ':' + x[12:14] + '.' + x[14:17] + '000').astype("datetime64")
+	df = tickdata_df.loc[(tickdata_df.UL == "388") & (tickdata_df.tradeid != "")]
+	print (df)
 
 	return
 

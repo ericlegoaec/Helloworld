@@ -96,8 +96,8 @@ def main():
     url = input("Enter the master.json: ")
     video_file = video_dl(url)
     audio_file = audio_dl(url)
-    # video_file = r"/Users/frederickli/Projects/video_1055442259.mp4"
-    # audio_file = r"/Users/frederickli/Projects/audio_1055442245.mp4"
+    # video_file = r"/Users/frederickli/Projects/video_393769816.mp4"
+    # audio_file = r"/Users/frederickli/Projects/audio_393769817.mp4"
     combine(video_file, audio_file)
     return
 
