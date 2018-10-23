@@ -72,7 +72,7 @@ def audio_dl(master_json_url):
 
     for segment in tqdm(audio['segments']):
         segment_url = audio_base_url + segment['url']
-        resp = requests.get(segment_url, stream=True)
+        resp = requests.get(segment_url)
         if resp.status_code != 200:
             print ('not 200!')
             print (resp)

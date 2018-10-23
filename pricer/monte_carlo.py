@@ -61,37 +61,6 @@ class monte_carlo:
 		last_price = prices[-1]
 		
 		simulation_df = pd.DataFrame()
-
-		#Create Each Simulation as a Column in df
-		for x in range(num_simulations):
-			count = 0
-			daily_vol = returns.std()
-			
-			price_series = []
-			
-			#Append Start Value
-			price = last_price * (1 + np.random.normal(0, daily_vol))
-			price_series.append(price)
-			
-			#Series for Preditcted Days
-			for i in range(predicted_days):
-				if count == 251:
-					break
-				price = price_series[count] * (1 + np.random.normal(0, daily_vol))
-				price_series.append(price)
-				count += 1
-		
-			simulation_df[x] = price_series
-			self.simulation_df = simulation_df
-			self.predicted_days = predicted_days
-
-	def monte_carlo_sim(self, num_simulations, predicted_days):
-		returns = self.returns
-		prices = self.prices
-		
-		last_price = prices[-1]
-		
-		simulation_df = pd.DataFrame()
  
 		#Create Each Simulation as a Column in df
 		for x in range(num_simulations):

@@ -112,8 +112,8 @@ def main():
 	fulllist_df, tickdata_df = import_df(CONST_DIC["dw_list_file"], CONST_DIC["tmp_file"])
 	tickdata_df = pd.merge(tickdata_df, fulllist_df, on=["security"], how="left")
 	tickdata_df["timestamp"] = tickdata_df["ordertime"].apply(lambda x: x[0:4] + '-' + x[4:6] + '-' + x[6:8] + 'T' + x[8:10] + ':' + x[10:12] + ':' + x[12:14] + '.' + x[14:17] + '000').astype("datetime64")
-	df = tickdata_df.loc[(tickdata_df.UL == "388") & (tickdata_df.tradeid != "")]
-	print (df)
+	tickdata_df["pct_chg"] = tickdata_df.groupby(["security"])["price"] - tickdata_df.groupby(["security"])["price"].shift(1)
+	print (tickdata_df.loc[(tickdata_df.UL == "175") | (tickdata_df.security == "175") ] )
 
 	return
 
