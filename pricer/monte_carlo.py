@@ -88,47 +88,6 @@ class monte_carlo:
 	def brownian_motion(self, num_simulations, predicted_days):
 		returns = self.returns
 		prices = self.prices
-
-		last_price = prices[-1]
-
-		#Note we are assuming drift here
-		simulation_df = pd.DataFrame()
-		
-		#Create Each Simulation as a Column in df
-		for x in range(num_simulations):
-			
-			#Inputs
-			count = 0
-			avg_daily_ret = returns.mean()
-			variance = returns.var()
-			
-			daily_vol = returns.std()
-			daily_drift = avg_daily_ret - (variance/2)
-			drift = daily_drift - 0.5 * daily_vol ** 2
-			
-			#Append Start Value    
-			prices = []
-			
-			shock = drift + daily_vol * np.random.normal()
-			last_price * math.exp(shock)
-			prices.append(last_price)
-			
-			for i in range(predicted_days):
-				if count == 251:
-					break
-				shock = drift + daily_vol * np.random.normal()
-				price = prices[count] * math.exp(shock)
-				prices.append(price)
-				
-		
-				count += 1
-			simulation_df[x] = prices
-			self.simulation_df = simulation_df
-			self.predicted_days = predicted_days
-
-	def brownian_motion(self, num_simulations, predicted_days):
-		returns = self.returns
-		prices = self.prices
  
 		last_price = prices[-1]
  
