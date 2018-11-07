@@ -67,15 +67,16 @@ function BsmCallMc(S_t, K, r, vol, T) {
     // Zero array to store values (often faster than appending)
     var S = Array(n_steps).fill().map(() => Array(N).fill(S_t))
     var standard = gaussian(0, 1);
-    
-    for (var t=0; t<n_steps; t++) {
+
+    for (var t=0; t<n_steps-1; t++) {
         for (var u=0; u<N; u++) {
-            
-            S[t+1, u] = S[t, u] * Math.exp((r - 0.5 * Math.pow(vol, 2)) * dt + (vol * Math.sqrt(dt) * standard()))
-            console.log( S[t, u] * Math.exp((r - 0.5 * Math.pow(vol, 2)) * dt + (vol * Math.sqrt(dt) * standard())) )
+            S[t+1][u] = S[t][u] * Math.exp((r - 0.5 * Math.pow(vol, 2)) * dt + (vol * Math.sqrt(dt) * standard()))
         }
     }
     
+    S.map(x=>
+        console.log(x[N-1])
+    )
     var C = Math.exp(-r * T) * 1 / N * Math.max( S.map(x=>x[N-1]-K), 0 )
     return C
 }
