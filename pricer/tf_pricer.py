@@ -38,14 +38,17 @@ def blackScholes_tf_pricer(enable_greeks = True):
     npv =  S*Phi(d_1) - K*tf.exp(-r*dt)*Phi(d_2)
     target_calc = [npv]
     if enable_greeks:
-        greeks = tf.gradients(npv, [S, sigma, r, K, dt])
-        dS_2ndOrder = tf.gradients(greeks[0], [S, sigma, r, K, dt]) 
+        greeks = tf.gradients(npv, [S, K, r, sigma, dt])
+        # dS_2ndOrder = tf.gradients(greeks[0], [S, sigma, r, K, dt]) 
         # Calculate mixed 2nd order greeks for S (esp. gamma, vanna) and sigma (esp. volga)
-        dsigma_2ndOrder = tf.gradients(greeks[1], [S, sigma, r, K, dt])
-        dr_2ndOrder = tf.gradients(greeks[2], [S, sigma, r, K, dt]) 
-        dK_2ndOrder = tf.gradients(greeks[3], [S, sigma, r, K, dt]) 
-        dT_2ndOrder = tf.gradients(greeks[4], [S, sigma, r, K, dt])
-        target_calc += [greeks, dS_2ndOrder, dsigma_2ndOrder, dr_2ndOrder, dK_2ndOrder, dT_2ndOrder]
+        # dsigma_2ndOrder = tf.gradients(greeks[1], [S, sigma, r, K, dt])
+        # dr_2ndOrder = tf.gradients(greeks[2], [S, sigma, r, K, dt]) 
+        # dK_2ndOrder = tf.gradients(greeks[3], [S, sigma, r, K, dt]) 
+        # dT_2ndOrder = tf.gradients(greeks[4], [S, sigma, r, K, dt])
+        target_calc += [greeks
+            # , dS_2ndOrder
+            # , dsigma_2ndOrder, dr_2ndOrder, dK_2ndOrder, dT_2ndOrder
+            ]
     
     # Function to feed in the input and calculate the computational graph
     def execute_graph(S_0, strike, time_to_expiry, implied_vol, riskfree_rate):
@@ -155,5 +158,8 @@ def main():
     _ = plt.title('Simulated Path')
     _ = plt.ylabel('Price')
     _ = plt.xlabel('TimeStep') 
+
+x = blackScholes_tf_pricer()
+print (x(100., 110., 2., 0.2, 0.03))
 
 main()
