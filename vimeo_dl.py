@@ -4,6 +4,8 @@ import requests
 import base64
 from moviepy.editor import VideoFileClip
 from tqdm import tqdm
+import multiprocessing
+from multiprocessing.pool import ThreadPool
 
 login_info = {"username":"venuschw","password":"Venus2834"}
 
@@ -16,6 +18,30 @@ login_info = {"username":"venuschw","password":"Venus2834"}
 
 #     resp = requests.get(drawing_url)
 #     return
+
+def dl_segment(url):
+    print (url)
+    resp = requests.get(url)
+    return resp
+
+def multi_dl(base_url, data, filename):
+    media_file = open(filename, 'wb')
+
+    init_segment = base64.b64decode(data['init_segment'])
+    media_file.write(init_segment)
+    
+    seg_arr = list(map(lambda x: x["url"], data["segments"]))
+    seg_arr = sorted(seg_arr, key=lambda x: int(x[7:-4]), reverse=True)
+    urls_arr = list(map(lambda x: base_url + x, seg_arr))
+
+    p = ThreadPool(multiprocessing.cpu_count())
+    results = p.map(dl_segment, urls_arr)
+    for resp in results:
+        for chunk in resp:
+            media_file.write(chunk)
+    media_file.flush()
+    media_file.close()
+    return
 
 def video_dl(master_json_url):
     base_url = master_json_url[:master_json_url.rfind('/', 0, -26) + 1]
@@ -32,24 +58,7 @@ def video_dl(master_json_url):
     filename = 'video_%s.mp4' % video['id']
     print ('saving to %s' % filename)
 
-    video_file = open(filename, 'wb')
-
-    init_segment = base64.b64decode(video['init_segment'])
-    video_file.write(init_segment)
-
-    for segment in tqdm(video['segments']):
-        segment_url = video_base_url + segment['url']
-        resp = requests.get(segment_url, stream=True)
-        if resp.status_code != 200:
-            print ('not 200!')
-            print (resp)
-            print (segment_url)
-            break
-        for chunk in resp:
-            video_file.write(chunk)
-
-    video_file.flush()
-    video_file.close()
+    multi_dl(video_base_url, video, filename)
     return filename
 
 def audio_dl(master_json_url):
@@ -65,24 +74,7 @@ def audio_dl(master_json_url):
     filename = 'audio_%s.mp4' % audio['id']
     print ('saving to %s' % filename)
 
-    audio_file = open(filename, 'wb')
-
-    init_segment = base64.b64decode(audio['init_segment'])
-    audio_file.write(init_segment)
-
-    for segment in tqdm(audio['segments']):
-        segment_url = audio_base_url + segment['url']
-        resp = requests.get(segment_url)
-        if resp.status_code != 200:
-            print ('not 200!')
-            print (resp)
-            print (segment_url)
-            break
-        for chunk in resp:
-            audio_file.write(chunk)
-
-    audio_file.flush()
-    audio_file.close()
+    multi_dl(audio_base_url, audio, filename)
     return filename
 
 def combine(video_file, audio_file):
@@ -93,11 +85,12 @@ def combine(video_file, audio_file):
     return
 
 def main():
-    url = input("Enter the master.json: ")
-    video_file = video_dl(url)
-    audio_file = audio_dl(url)
-    # video_file = r"/Users/frederickli/Projects/video_393769816.mp4"
-    # audio_file = r"/Users/frederickli/Projects/audio_393769817.mp4"
+    url = "https://skyfire.vimeocdn.com/1543522346-0x14f3ceab98ff6be39727f351deff0c88e7b9aa38/301441808/sep/video/1152474535,1152474555,1152474553,1152474549/master.json?base64_init=1"
+    #url = input("Enter the master.json: ")
+    # video_file = video_dl(url)
+    # audio_file = audio_dl(url)
+    video_file = "/Users/frederickli/Projects/video_1152474549.mp4"
+    audio_file = "/Users/frederickli/Projects/audio_1152474535.mp4"
     combine(video_file, audio_file)
     return
 
