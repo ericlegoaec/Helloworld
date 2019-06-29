@@ -21,7 +21,12 @@ login_info = {"username":"venuschw","password":"Venus2834"}
 
 def dl_segment(url):
     print (url)
-    resp = requests.get(url)
+    while True:
+        try:
+            resp = requests.get(url)
+            break
+        except:
+            pass
     return resp
 
 def multi_dl(base_url, data, filename):
@@ -78,19 +83,20 @@ def audio_dl(master_json_url):
     return filename
 
 def combine(video_file, audio_file):
+    print ("Combining %s, %s", (video_file, audio_file))
     video_clip = VideoFileClip(video_file)
-    video_clip.write_videofile(os.path.join("/Users/frederickli/Downloads", os.path.basename(video_file.replace("video_", ""))), audio=audio_file)
+    video_clip.write_videofile(os.path.join("C:\\Projects\\Helloworld", os.path.basename(video_file.replace("video_", ""))), audio=audio_file)
     os.remove(video_file)
     os.remove(audio_file)
     return
 
 def main():
-    url = "https://skyfire.vimeocdn.com/1543522346-0x14f3ceab98ff6be39727f351deff0c88e7b9aa38/301441808/sep/video/1152474535,1152474555,1152474553,1152474549/master.json?base64_init=1"
+    url = "https://43skyfiregce-vimeo.akamaized.net/exp=1561800780~acl=%2F339917442%2F%2A~hmac=87c0332e665cc66c32647d79456305cc6656a8e9d89a17cc7019c774328f778e/339917442/sep/video/1353743421,1353737901,1353737896,1353737744,1353737742/master.json?base64_init=1"
     #url = input("Enter the master.json: ")
-    # video_file = video_dl(url)
-    # audio_file = audio_dl(url)
-    video_file = "/Users/frederickli/Projects/video_1152474549.mp4"
-    audio_file = "/Users/frederickli/Projects/audio_1152474535.mp4"
+    video_file = video_dl(url)
+    audio_file = audio_dl(url)
+    # video_file = r"C:\Projects\Helloworld\video_827972020.mp4"
+    # audio_file = r"C:\Projects\Helloworld\audio_827972019.mp4"
     combine(video_file, audio_file)
     return
 
