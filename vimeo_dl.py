@@ -3,7 +3,7 @@ import re
 import requests
 import base64
 from moviepy.editor import VideoFileClip
-from tqdm import tqdm
+# from tqdm import tqdm
 import multiprocessing
 from multiprocessing.pool import ThreadPool
 
@@ -20,13 +20,14 @@ login_info = {"username":"venuschw","password":"Venus2834"}
 #     return
 
 def dl_segment(url):
-    print (url)
-    while True:
+    retry = True
+    while retry:
         try:
             resp = requests.get(url)
-            break
+            retry = False
         except:
-            pass
+            print ("Retrying " + url)
+    print (url)
     return resp
 
 def multi_dl(base_url, data, filename):
@@ -39,7 +40,7 @@ def multi_dl(base_url, data, filename):
     seg_arr = sorted(seg_arr, key=lambda x: int(x[7:-4]), reverse=True)
     urls_arr = list(map(lambda x: base_url + x, seg_arr))
 
-    p = ThreadPool(multiprocessing.cpu_count())
+    p = ThreadPool(int(len(urls_arr)/20))
     results = p.map(dl_segment, urls_arr)
     for resp in results:
         for chunk in resp:
@@ -83,20 +84,19 @@ def audio_dl(master_json_url):
     return filename
 
 def combine(video_file, audio_file):
-    print ("Combining %s, %s", (video_file, audio_file))
     video_clip = VideoFileClip(video_file)
-    video_clip.write_videofile(os.path.join("C:\\Projects\\Helloworld", os.path.basename(video_file.replace("video_", ""))), audio=audio_file)
+    video_clip.write_videofile(os.path.join("/Users/frederickli/Downloads", os.path.basename(video_file.replace("video_", ""))), audio=audio_file)
     os.remove(video_file)
     os.remove(audio_file)
     return
 
 def main():
-    url = "https://43skyfiregce-vimeo.akamaized.net/exp=1561800780~acl=%2F339917442%2F%2A~hmac=87c0332e665cc66c32647d79456305cc6656a8e9d89a17cc7019c774328f778e/339917442/sep/video/1353743421,1353737901,1353737896,1353737744,1353737742/master.json?base64_init=1"
+    url = "https://132skyfiregce-vimeo.akamaized.net/exp=1561801080~acl=%2F342181531%2F%2A~hmac=4736b61a653fcffdf819513eee04ed9af0685e7208b9713de0b6a02702806ba6/342181531/sep/video/1367439251,1367439249,1367439205,1367439204,1367439203/master.json?base64_init=1"
     #url = input("Enter the master.json: ")
     video_file = video_dl(url)
     audio_file = audio_dl(url)
-    # video_file = r"C:\Projects\Helloworld\video_827972020.mp4"
-    # audio_file = r"C:\Projects\Helloworld\audio_827972019.mp4"
+    # video_file = "/Users/frederickli/Projects/video_1152474549.mp4"
+    # audio_file = "/Users/frederickli/Projects/audio_1152474535.mp4"
     combine(video_file, audio_file)
     return
 
